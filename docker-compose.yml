@@ -1,0 +1,11 @@
+services:
+  r-flix:
+    image: r-frontend:latest
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
