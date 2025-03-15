@@ -172,8 +172,8 @@ const TopRatedMovies: React.FC = () => {
                       variant="body2"
                       sx={{ color: 'white', mr: 0.5, fontSize: 14 }}
                     >
-                      {userRatings[movie.id] !== undefined
-                        ? userRatings[movie.id]
+                      {userRatings.ratings[movie.id] !== undefined
+                        ? userRatings.ratings[movie.id]
                         : movie.vote_average}
                     </Typography>
                     <StarIcon sx={{ color: 'yellow', fontSize: 16 }} />
