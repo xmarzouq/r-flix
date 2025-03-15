@@ -49,7 +49,14 @@ export interface MoviesState {
     loading: boolean;
     error: string | null;
   };
-  userRatings: { [key: number]: number };
+  userRatings: {
+    ratings: { [key: number]: number };
+    loading: boolean;
+    error: string | null;
+  };
+  auth: {
+    isAuthenticated: boolean;
+  };
 }
 
 const initialState: MoviesState = {
@@ -78,7 +85,14 @@ const initialState: MoviesState = {
     loading: false,
     error: null,
   },
-  userRatings: {},
+  userRatings: {
+    ratings: {},
+    loading: false,
+    error: null,
+  },
+  auth: {
+    isAuthenticated: false,
+  },
 };
 
 export const fetchPopularMoviesThunk = createAsyncThunk(
@@ -225,7 +239,7 @@ const moviesSlice = createSlice({
     });
     builder.addCase(fetchUserRatingsThunk.fulfilled, (state, action) => {
       state.userRatings.loading = false;
-      state.userRatings = action.payload;
+      state.userRatings.ratings = action.payload;
     });
     builder.addCase(fetchUserRatingsThunk.rejected, (state, action) => {
       state.userRatings.loading = false;
