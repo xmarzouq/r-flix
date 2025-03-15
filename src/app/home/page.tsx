@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import {
   Box,
   Typography,
@@ -178,7 +178,9 @@ const HomePage: React.FC = () => {
       </Typography>
       {isAuthenticated && (
         <Box sx={{ mb: 4 }}>
-          <Search ref={searchRef} onSearchComplete={handleSearchComplete} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Search ref={searchRef} onSearchComplete={handleSearchComplete} />
+          </Suspense>
         </Box>
       )}
       {searchState.results.length > 0 ? (
