@@ -20,6 +20,7 @@ interface SearchProps {
   onSearchComplete: (query: string) => void;
 }
 
+// eslint-disable-next-line react/display-name
 const Search = forwardRef(({ onSearchComplete }: SearchProps, ref) => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<MovieOption[]>([]);
@@ -39,8 +40,8 @@ const Search = forwardRef(({ onSearchComplete }: SearchProps, ref) => {
       }
       setLoading(true);
       try {
-        const data = await searchMovies(query);
-        const movieOptions = data.results.map((movie: any) => ({
+        const data = (await searchMovies(query)) as { results: MovieOption[] };
+        const movieOptions = data.results.map((movie: MovieOption) => ({
           id: movie.id,
           title: movie.title,
           release_date: movie.release_date,

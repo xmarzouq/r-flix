@@ -28,8 +28,12 @@ const CallbackPage: React.FC = () => {
         dispatch(setSessionId(sessionId));
         dispatch(setAuthenticated());
         router.push('/home');
-      } catch (err: any) {
-        setError(`Error creating session: ${err.message}`);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(`Error creating session: ${err.message}`);
+        } else {
+          setError('Error creating session');
+        }
       }
     }
 

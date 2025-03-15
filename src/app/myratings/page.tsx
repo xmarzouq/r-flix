@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import React, { useEffect, useState } from 'react';
 import {
@@ -34,7 +36,7 @@ const MyRatingsPage: React.FC = () => {
         setLoading(false);
         return;
       }
-      const data = await fetchMyRatedMovies(sessionId);
+      const data = (await fetchMyRatedMovies(sessionId)) as { results: any[] };
       const ratedMovies = data.results.map((movie: any) => ({
         ...movie,
         user_rating: movie.rating,

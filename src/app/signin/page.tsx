@@ -29,8 +29,12 @@ const SignInPage: React.FC = () => {
 
       const tmdbAuthUrl = `https://www.themoviedb.org/authenticate/${token}?redirect_to=http://127.0.0.1:3000/auth/callback`;
       window.location.href = tmdbAuthUrl;
-    } catch (err: any) {
-      console.error('Sign-in failed:', err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Sign-in failed:', err.message);
+      } else {
+        console.error('Sign-in failed:', err);
+      }
     }
   };
 

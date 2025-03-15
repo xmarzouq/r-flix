@@ -83,10 +83,14 @@ const MovieDetails: React.FC = () => {
 
   const loadMovie = useCallback(async () => {
     try {
-      const data = await fetchMovieDetails(id);
+      const data = (await fetchMovieDetails(id)) as MovieDetailsData;
       setMovie(data);
-    } catch (err: any) {
-      console.error('Failed to load movie details:', err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Failed to load movie details:', err.message);
+      } else {
+        console.error('Failed to load movie details:', err);
+      }
       setError('Failed to load movie details');
     }
   }, [id]);
@@ -104,8 +108,12 @@ const MovieDetails: React.FC = () => {
       await rateMovie(movie!.id, newRating, sessionId);
       alert('Rating submitted successfully!');
       loadMovie();
-    } catch (err: any) {
-      console.error('Rating error:', err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('Rating error:', err.message);
+      } else {
+        console.error('Rating error:', err);
+      }
       alert('Failed to submit rating.');
     }
   };

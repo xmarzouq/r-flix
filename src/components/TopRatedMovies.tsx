@@ -11,6 +11,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  SelectChangeEvent,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useRouter } from 'next/navigation';
@@ -28,7 +29,7 @@ const TopRatedMovies: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { movies, currentPage, selectedGenre, loading, error } = useSelector(
+  const { movies, currentPage, selectedGenre, error } = useSelector(
     (state: RootState) => state.movies.topRated
   );
   const genresState = useSelector((state: RootState) => state.movies.genres);
@@ -53,7 +54,7 @@ const TopRatedMovies: React.FC = () => {
     }
   }, [dispatch, sessionId]);
 
-  const handleGenreChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleGenreChange = (event: SelectChangeEvent<number>) => {
     const value = event.target.value as number | '';
     dispatch(setTopRatedSelectedGenre(value === '' ? null : value));
     dispatch(setTopRatedCurrentPage(1));

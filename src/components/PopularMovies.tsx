@@ -12,6 +12,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  SelectChangeEvent,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useRouter } from 'next/navigation';
@@ -29,7 +30,7 @@ const PopularMovies: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { movies, currentPage, selectedGenre, loading, error } = useSelector(
+  const { movies, currentPage, selectedGenre, error } = useSelector(
     (state: RootState) => state.movies.popular
   );
   const genresState = useSelector((state: RootState) => state.movies.genres);
@@ -54,7 +55,7 @@ const PopularMovies: React.FC = () => {
     }
   }, [dispatch, sessionId]);
 
-  const handleGenreChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleGenreChange = (event: SelectChangeEvent<number>) => {
     const value = event.target.value as number | '';
     dispatch(setPopularSelectedGenre(value === '' ? null : value));
     dispatch(setPopularCurrentPage(1));

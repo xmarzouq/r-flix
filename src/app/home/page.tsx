@@ -86,6 +86,7 @@ const HomePage: React.FC = () => {
         Search Results
       </Typography>
       <Grid container spacing={3}>
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         {searchState.results.map((movie: any) => (
           <Grid item key={movie.id} xs={12} sm={6} md={4} lg={3}>
             <Card

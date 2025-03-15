@@ -62,7 +62,7 @@ export async function createSession(requestToken: string): Promise<string> {
 export async function fetchPopularMovies(
   page: number,
   genre?: number | null
-): Promise<any> {
+): Promise<unknown> {
   let url: URL;
   if (genre) {
     url = new URL(`${BASE_URL}/discover/movie`);
@@ -87,7 +87,7 @@ export async function fetchPopularMovies(
   return response.json();
 }
 
-export async function fetchGenres(): Promise<any> {
+export async function fetchGenres(): Promise<unknown> {
   const response = await fetch(`${BASE_URL}/genre/movie/list`, {
     headers: {
       accept: 'application/json',
@@ -104,7 +104,7 @@ export async function fetchGenres(): Promise<any> {
 export async function searchMovies(
   query: string,
   page: number = 1
-): Promise<any> {
+): Promise<unknown> {
   const url = new URL(`${BASE_URL}/search/movie`);
   url.searchParams.set('query', query);
   url.searchParams.set('page', page.toString());
@@ -122,7 +122,7 @@ export async function searchMovies(
   return response.json();
 }
 
-export async function fetchMovieDetails(id: string): Promise<any> {
+export async function fetchMovieDetails(id: string): Promise<unknown> {
   const response = await fetch(
     `${BASE_URL}/movie/${id}?append_to_response=credits,reviews,recommendations`,
     {
@@ -140,7 +140,7 @@ export async function fetchMovieDetails(id: string): Promise<any> {
 export async function fetchTopRatedMovies(
   page: number,
   genre?: number | null
-): Promise<any> {
+): Promise<unknown> {
   let url: URL;
   if (genre) {
     url = new URL(`${BASE_URL}/discover/movie`);
@@ -169,7 +169,7 @@ export async function fetchTopRatedMovies(
 /* --- New Functions for Rating --- */
 
 /* Fetch movies that the user rated */
-export async function fetchMyRatedMovies(sessionId: string): Promise<any> {
+export async function fetchMyRatedMovies(sessionId: string): Promise<unknown> {
   // First, get the account details to obtain account_id
   const accountResponse = await fetch(
     `${BASE_URL}/account?session_id=${sessionId}`,
@@ -210,7 +210,7 @@ export async function rateMovie(
   movieId: number,
   rating: number,
   sessionId: string
-): Promise<any> {
+): Promise<unknown> {
   const response = await fetch(
     `${BASE_URL}/movie/${movieId}/rating?session_id=${sessionId}`,
     {
@@ -233,7 +233,7 @@ export async function rateMovie(
 export async function deleteMovieRating(
   movieId: number,
   sessionId: string
-): Promise<any> {
+): Promise<unknown> {
   const response = await fetch(
     `${BASE_URL}/movie/${movieId}/rating?session_id=${sessionId}`,
     {

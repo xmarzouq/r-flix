@@ -85,7 +85,9 @@ export const fetchPopularMoviesThunk = createAsyncThunk(
   'movies/fetchPopular',
   async (params: { page: number; genre: number | null }) => {
     const { page, genre } = params;
-    const data = await fetchPopularMovies(page, genre);
+    const data = (await fetchPopularMovies(page, genre)) as {
+      results: Movie[];
+    };
     return data.results as Movie[];
   }
 );
@@ -124,6 +126,7 @@ export const fetchUserRatingsThunk = createAsyncThunk(
   async (sessionId: string) => {
     const data = await fetchMyRatedMovies(sessionId);
     const ratingsMap: { [key: number]: number } = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data.results.forEach((movie: any) => {
       ratingsMap[movie.id] = movie.rating;
     });
