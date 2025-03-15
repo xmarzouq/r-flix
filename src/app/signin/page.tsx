@@ -5,6 +5,7 @@ import { fetchRequestToken } from '@/api/tmdb';
 import { Box, Button, Typography } from '@mui/material';
 import { RootState, AppDispatch } from '@/store/store';
 import { setRequestToken } from '@/store/authSlice';
+import { getRootUrl } from '@/config';
 
 const SignInPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +18,7 @@ const SignInPage: React.FC = () => {
       console.log('Request token:', requestToken);
     }
   }, [requestToken]);
+
   const handleSignIn = async () => {
     try {
       let token = requestToken;
@@ -27,7 +29,8 @@ const SignInPage: React.FC = () => {
         }
       }
 
-      const tmdbAuthUrl = `https://www.themoviedb.org/authenticate/${token}?redirect_to=http://127.0.0.1:3000/auth/callback`;
+      const rootUrl = getRootUrl();
+      const tmdbAuthUrl = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${rootUrl}/auth/callback`;
       window.location.href = tmdbAuthUrl;
     } catch (err: unknown) {
       if (err instanceof Error) {
