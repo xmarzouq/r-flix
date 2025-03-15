@@ -27,16 +27,27 @@ import { useRouter, useSearchParams } from 'next/navigation';
 const HomePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const searchState = useSelector((state: RootState) => state.movies.search);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'popular' | 'toprated' | 'search'>(
-    (searchParams.get('view') as 'popular' | 'toprated' | 'search') || 'popular'
+    'popular'
   );
   const searchRef = useRef<{ clearInput: () => void }>(null);
+
+  // Wrap useSearchParams in Suspense
+  const SearchParamsComponent = () => {
+    const searchParams = useSearchParams();
+    useEffect(() => {
+      const newView =
+        (searchParams.get('view') as 'popular' | 'toprated' | 'search') ||
+        'popular';
+      setView(newView);
+    }, [searchParams]);
+    return null;
+  };
 
   // Redirect to sign-in page if not authenticated
   useEffect(() => {
@@ -46,14 +57,6 @@ const HomePage: React.FC = () => {
     }
     setLoading(false);
   }, [dispatch]);
-
-  // Update view state when searchParams change
-  useEffect(() => {
-    const newView =
-      (searchParams.get('view') as 'popular' | 'toprated' | 'search') ||
-      'popular';
-    setView(newView);
-  }, [searchParams]);
 
   // When search query changes, fetch search movies
   useEffect(() => {
@@ -65,8 +68,6 @@ const HomePage: React.FC = () => {
   }, [dispatch, searchState.query, router]);
 
   const handleSearchComplete = (query: string) => {
-    // When user hits ENTER, the Search component will trigger onSearchComplete.
-    // We then set the query in the Redux state.
     dispatch(setSearchQuery(query));
   };
 
@@ -173,6 +174,9 @@ const HomePage: React.FC = () => {
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 } }}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsComponent />
+      </Suspense>
       <Typography variant="h4" gutterBottom>
         Discover Movies
       </Typography>
