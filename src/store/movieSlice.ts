@@ -96,7 +96,9 @@ export const fetchTopRatedMoviesThunk = createAsyncThunk(
   'movies/fetchTopRated',
   async (params: { page: number; genre: number | null }) => {
     const { page, genre } = params;
-    const data = await fetchTopRatedMovies(page, genre);
+    const data = (await fetchTopRatedMovies(page, genre)) as {
+      results: Movie[];
+    };
     const filtered = data.results.filter(
       (movie: Movie) => movie.vote_count >= 100
     );
@@ -107,7 +109,7 @@ export const fetchTopRatedMoviesThunk = createAsyncThunk(
 export const fetchGenresThunk = createAsyncThunk(
   'movies/fetchGenres',
   async () => {
-    const data = await fetchGenres();
+    const data = (await fetchGenres()) as { genres: Genre[] };
     return data.genres as Genre[];
   }
 );
@@ -116,7 +118,7 @@ export const fetchSearchMoviesThunk = createAsyncThunk(
   'movies/fetchSearch',
   async (params: { query: string; page?: number }) => {
     const { query, page = 1 } = params;
-    const data = await searchMovies(query, page);
+    const data = (await searchMovies(query, page)) as { results: Movie[] };
     return data.results as Movie[];
   }
 );
@@ -124,10 +126,12 @@ export const fetchSearchMoviesThunk = createAsyncThunk(
 export const fetchUserRatingsThunk = createAsyncThunk(
   'movies/fetchUserRatings',
   async (sessionId: string) => {
-    const data = await fetchMyRatedMovies(sessionId);
+    const data = (await fetchMyRatedMovies(sessionId)) as {
+      results: { id: number; rating: number }[];
+    };
     const ratingsMap: { [key: number]: number } = {};
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data.results.forEach((movie: any) => {
+    data.results.forEach((movie) => {
       ratingsMap[movie.id] = movie.rating;
     });
     return ratingsMap;
